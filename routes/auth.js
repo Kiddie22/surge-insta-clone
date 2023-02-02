@@ -6,6 +6,19 @@ const jwt = require('jsonwebtoken');
 
 //REGISTER
 Router.post('/register', async (req, res) => {
+  if ((!req.body.username, !req.body.email, !req.body.password)) {
+    res.status(401).json({ msg: 'Complete the form' });
+  }
+
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (user) {
+      res.status(401).json({ msg: 'User with that name already exists' });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -14,8 +27,21 @@ Router.post('/register', async (req, res) => {
       process.env.PASS_SECRET
     ).toString(),
   });
+
   const savedUser = await newUser.save();
-  res.status(201).json(savedUser);
+
+  const token = jwt.sign(
+    {
+      id: savedUser._id,
+      username: savedUser.username,
+      isAdmin: savedUser.isAdmin,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '30d' }
+  );
+
+  const { password, ...others } = savedUser._doc;
+  res.status(200).json({ ...others, token });
 });
 
 //LOGIN
