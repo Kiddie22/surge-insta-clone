@@ -7,6 +7,8 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'username is required'],
       unique: [true, 'username already exists'],
+      min: 3,
+      max: 50,
     },
     email: {
       type: String,
@@ -16,6 +18,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'password is required'],
+      min: 5,
     },
     isAdmin: {
       type: Boolean,
