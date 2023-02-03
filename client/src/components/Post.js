@@ -1,5 +1,10 @@
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+
 const Post = (props) => {
-  const { post } = props;
+  const { post, user } = props;
+  const userId = user._id;
+  const token = useSelector((state) => state.token);
 
   const getDays = () => {
     let today = new Date();
@@ -18,14 +23,71 @@ const Post = (props) => {
     }
   };
 
+  const likePost = async () => {
+    await axios
+      .put(
+        `http://localhost:5000/api/posts/add/${post._id}`,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const unlikePost = async () => {
+    await axios
+      .put(
+        `http://localhost:5000/api/posts/remove/${post._id}`,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="card m-2">
       <img src={post.pictureUrl} className="card-img-top" />
       <div className="card-body">
         <div className="row align-items-start">
-          <div className="col">
-            <i className="bi bi-heart-fill px-1"></i>Likes
-          </div>
+          {post.likes && post.likes[userId] == true ? (
+            // if user has liked the post
+            <button
+              className="col"
+              style={{ border: 'none', backgroundColor: 'transparent' }}
+              onClick={() => unlikePost()}
+            >
+              <i className="bi bi-heart-fill px-1" style={{ color: 'red' }}></i>
+              {post.likes && Object.keys(post.likes).length}
+            </button>
+          ) : (
+            // if user has not liked the post
+            <button
+              className="col"
+              style={{ border: 'none', backgroundColor: 'transparent' }}
+              onClick={() => likePost()}
+            >
+              <i className="bi bi-heart-fill px-1"></i>
+              {/* {post.likes ? post.likes.hasOwnProperty.length : '0'} */}
+              {post.likes && Object.keys(post.likes).length}
+            </button>
+          )}
           <div className="col">{post.username}</div>
           <div className="col">{`${getDays()} ago`}</div>
         </div>

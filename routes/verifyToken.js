@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ msg: 'Not authenticated' });
+    return res.status(401).json({ msg: 'Auth token not found' });
   }
   try {
     const token = authHeader.split(' ')[1];

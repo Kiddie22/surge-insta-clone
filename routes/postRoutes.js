@@ -36,4 +36,34 @@ router.delete('/:id', verifyToken, async (req, res) => {
   res.status(200).json(post);
 });
 
+//ADD LIKE TO POST BY ID
+router.put('/add/:id', verifyToken, async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+  const post = await Post.findByIdAndUpdate(
+    { _id: postId },
+    {
+      $set: {
+        [`likes.${userId}`]: true,
+      },
+    }
+  );
+  res.status(200).json(post);
+});
+
+//REMOVE LIKE TO POST BY ID
+router.put('/remove/:id', verifyToken, async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+  const post = await Post.findByIdAndUpdate(
+    { _id: postId },
+    {
+      $unset: {
+        [`likes.${userId}`]: '',
+      },
+    }
+  );
+  res.status(200).json(post);
+});
+
 module.exports = router;

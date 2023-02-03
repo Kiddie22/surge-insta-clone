@@ -23,7 +23,6 @@ const Register = () => {
         password,
       })
       .then((res) => {
-        console.log(res);
         const data = res.data;
         dispatch(setLogin({ user: data._id, token: data.token }));
         navigate(`/`);

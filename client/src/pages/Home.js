@@ -46,10 +46,9 @@ const Home = () => {
         </div>
         <div className="col-4">
           {posts.map((post) => {
-            console.log(post);
             return (
               <div key={post._id}>
-                <Post post={post} />
+                <Post post={post} user={user} />
               </div>
             );
           })}
