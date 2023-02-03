@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const dispatch = useDispatch();
@@ -14,15 +16,17 @@ const Register = () => {
   const registerUser = async () => {
     await axios
       .post('http://localhost:5000/api/auth/register', {
-        username: username,
-        email: email,
-        password: password,
+        username,
+        firstname,
+        lastname,
+        email,
+        password,
       })
       .then((res) => {
         console.log(res);
         const data = res.data;
         dispatch(setLogin({ user: data._id, token: data.token }));
-        navigate.push(`/`);
+        navigate(`/`);
       })
       .catch((error) => {
         const element = document.getElementById('error-msg');
@@ -55,6 +59,34 @@ const Register = () => {
           required
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="firstname" className="form-label">
+          First Name
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          name="firstname"
+          placeholder="First Name"
+          required
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="lastname" className="form-label">
+          Last Name
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          name="lastname"
+          placeholder="Last Name"
+          required
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
         />
       </div>
       <div className="mb-3">

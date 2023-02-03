@@ -3,6 +3,7 @@ const Router = express.Router();
 const User = require('../models/User');
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const { verifyToken } = require('./verifyToken');
 
 //REGISTER
 Router.post('/register', async (req, res) => {
@@ -21,6 +22,8 @@ Router.post('/register', async (req, res) => {
 
   const newUser = new User({
     username: req.body.username,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     email: req.body.email,
     password: CryptoJS.AES.encrypt(
       req.body.password,
@@ -73,6 +76,23 @@ Router.post('/login', async (req, res) => {
 
   const { password, ...others } = user._doc;
   res.status(200).json({ ...others, token });
+});
+
+// ADD PROFILE PICTURE
+Router.post('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const image = req.body.image;
+
+    if (!image) {
+      return res.status(400).json({ msg: 'Please enter an image url' });
+    }
+
+    const user = await User.findByIdAndUpdate(id, { profilePictureUrl: image });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = Router;

@@ -10,6 +10,14 @@ const userSchema = new Schema(
       min: 3,
       max: 50,
     },
+    firstname: {
+      type: String,
+      required: [true, 'firstname is required'],
+    },
+    lastname: {
+      type: String,
+      required: [true, 'lastname is required'],
+    },
     email: {
       type: String,
       required: [true, 'email is required'],
@@ -20,9 +28,10 @@ const userSchema = new Schema(
       required: [true, 'password is required'],
       min: 5,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    profilePictureUrl: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dhdbpguyk/image/upload/v1675357372/User-Icon-Grey-300x300_onj3j2.png',
     },
   },
   { timestamps: true }

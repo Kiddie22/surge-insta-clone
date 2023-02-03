@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Post from '../components/Post';
+import Profile from '../components/Profile';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
+  const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
 
   const fetchPosts = async (req, res) => {
@@ -19,8 +22,15 @@ const Home = () => {
       });
   };
 
+  const fetchUser = async (req, res) => {
+    await axios.get(`http://localhost:5000/api/users/${userId}`).then((res) => {
+      setUser(res.data);
+    });
+  };
+
   useEffect(() => {
     fetchPosts();
+    fetchUser();
   }, []);
 
   return (
@@ -37,10 +47,16 @@ const Home = () => {
         <div className="col-4">
           {posts.map((post) => {
             console.log(post);
-            return <Post post={post} />;
+            return (
+              <div key={post._id}>
+                <Post post={post} />
+              </div>
+            );
           })}
         </div>
-        <div className="col-4">One of three columns</div>
+        <div className="col-4">
+          <Profile user={user} />
+        </div>
       </div>
     </div>
   );
