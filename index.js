@@ -11,7 +11,7 @@ const app = express();
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy-Report-Only',
-    "default-src 'self'; font-src * 'self'; style-src 'self' * 'unsafe-inline' 'unsafe-eval'; frame-src 'self'; script-src 'self' * 'unsafe-inline' 'unsafe-eval'; img-src 'self' * 'unsafe-inline' 'unsafe-eval';"
+    "default-src 'self'; font-src * 'self'; style-src 'self' * 'unsafe-inline' 'unsafe-eval'; frame-src 'self'; script-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js * 'unsafe-inline' 'unsafe-eval'; img-src 'self' * 'unsafe-inline' 'unsafe-eval';"
   );
   next();
 });
