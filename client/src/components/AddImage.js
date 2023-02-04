@@ -24,7 +24,7 @@ const AddImage = (props) => {
         image: imageUrl,
       };
       await instance.post(
-        `http://localhost:5000/api/auth/${user._id}`,
+        `api/auth/${user._id}`,
         submitPost
       );
     } catch (err) {

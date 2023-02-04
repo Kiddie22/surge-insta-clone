@@ -15,7 +15,7 @@ const Register = () => {
 
   const registerUser = async () => {
     await axios
-      .post('http://localhost:5000/api/auth/register', {
+      .post('api/auth/register', {
         username,
         firstname,
         lastname,

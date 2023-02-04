@@ -15,7 +15,7 @@ const Home = () => {
 
   const fetchPosts = async (req, res) => {
     await axios
-      .get('http://localhost:5000/api/posts/', {
+      .get('api/posts/', {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -26,7 +26,7 @@ const Home = () => {
   };
 
   const fetchUser = async (req, res) => {
-    await axios.get(`http://localhost:5000/api/users/${userId}`).then((res) => {
+    await axios.get(`api/users/${userId}`).then((res) => {
       setUser(res.data);
     });
   };
