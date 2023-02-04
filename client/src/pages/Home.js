@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [user, setUser] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const posts = useSelector((state) => state.posts);
@@ -16,6 +17,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const fetchPosts = async (req, res) => {
+    setIsLoading(true);
     await axios
       .get('api/posts/', {
         headers: {
@@ -24,6 +26,7 @@ const Home = () => {
       })
       .then((res) => {
         dispatch(setStatePosts({ posts: res.data }));
+        setIsLoading(false);
       });
   };
 
@@ -41,34 +44,42 @@ const Home = () => {
       fetchPosts();
       fetchUser();
     }
-  }, [posts]);
+  }, []);
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <img
-            className="mt-3"
-            src="assets/insta.png"
-            alt="instagram icon"
-            style={{ width: '100px' }}
-          />
-        </Col>
-        <Col className='scrollable'>
-          {posts &&
-            posts.map((post) => {
-              return (
-                <div key={post._id}>
-                  <Post post={post} user={user} />
-                </div>
-              );
-            })}
-        </Col>
-        <Col>
-          <Profile user={user} />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {isLoading ? (
+        <div className="spinner-container center">
+          <div className="loading-spinner"></div>
+        </div>
+      ) : (
+        <Container>
+          <Row>
+            <Col>
+              <img
+                className="mt-3"
+                src="assets/insta.png"
+                alt="instagram icon"
+                style={{ width: '100px' }}
+              />
+            </Col>
+            <Col className="scrollable">
+              {posts &&
+                posts.map((post) => {
+                  return (
+                    <div key={post._id}>
+                      <Post post={post} user={user} />
+                    </div>
+                  );
+                })}
+            </Col>
+            <Col>
+              <Profile user={user} />
+            </Col>
+          </Row>
+        </Container>
+      )}
+    </>
   );
 };
 
