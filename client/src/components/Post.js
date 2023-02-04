@@ -21,7 +21,7 @@ const Post = (props) => {
   const likePost = async () => {
     await axios
       .put(
-        `http://localhost:5000/api/posts/add/${post._id}`,
+        `api/posts/add/${post._id}`,
         {},
         { headers: { authorization: `Bearer ${token}` } }
       )
@@ -32,7 +32,7 @@ const Post = (props) => {
   const unlikePost = async () => {
     await axios
       .put(
-        `http://localhost:5000/api/posts/remove/${post._id}`,
+        `/api/posts/remove/${post._id}`,
         {},
         { headers: { authorization: `Bearer ${token}` } }
       )
