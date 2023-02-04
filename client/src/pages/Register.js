@@ -1,29 +1,36 @@
+import * as yup from 'yup';
 import axios from 'axios';
-import { useState } from 'react';
+import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
 import { useNavigate, Link } from 'react-router-dom';
+import { Button, TextField, Typography } from '@mui/material';
 
-const Register = () => {
-  const [username, setUsername] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+const registerSchema = yup.object().shape({
+  username: yup.mixed().required('required'),
+  firstname: yup.string().required('required'),
+  lastname: yup.string().required('required'),
+  email: yup.string().email('invalid email').required('required'),
+  password: yup.string().required('required').min(5),
+});
+
+const initialValuesRegister = {
+  username: '',
+  firstname: '',
+  lastname: '',
+  email: '',
+  password: '',
+};
+
+const RegisterForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  let navigate = useNavigate();
-
-  const registerUser = async () => {
+  const handleFormSubmit = async (values, onSubmitProps) => {
     await axios
-      .post('api/auth/register', {
-        username,
-        firstname,
-        lastname,
-        email,
-        password,
-      })
+      .post('api/auth/register', values)
       .then((res) => {
         const data = res.data;
+        onSubmitProps.resetForm();
         dispatch(setLogin({ user: data._id, token: data.token }));
         navigate(`/`);
       })
@@ -38,113 +45,108 @@ const Register = () => {
         mssg.appendChild(node);
         element.style.color = 'red';
         element.appendChild(mssg);
-        setUsername('');
-        setEmail('');
-        setPassword('');
       });
   };
 
   return (
-    <div className="register">
-      <div className="row align-items-start">
-        <div
-          className="col left register-form"
-          style={{
-            backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
-          }}
-        >
-          <h1 className="display-3">Register</h1>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              placeholder="Username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+    <Formik
+      onSubmit={handleFormSubmit}
+      initialValues={initialValuesRegister}
+      validationSchema={registerSchema}
+    >
+      {({ values, errors, touched, handleChange, handleSubmit }) => (
+        <div className="register">
+          <div className="row align-items-start">
+            <div
+              className="col left register-form"
+              style={{
+                backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
+              }}
+            >
+              <form onSubmit={handleSubmit}>
+                <Typography variant="h2" gutterBottom>
+                  REGISTER
+                </Typography>
+                <div className="mb-3">
+                  <TextField
+                    label="username"
+                    onChange={handleChange}
+                    value={values.username}
+                    name="username"
+                    error={
+                      Boolean(touched.username) && Boolean(errors.username)
+                    }
+                    helperText={touched.username && errors.username}
+                  />
+                </div>
+                <div className="mb-3">
+                  <TextField
+                    label="firstname"
+                    onChange={handleChange}
+                    value={values.firstname}
+                    name="firstname"
+                    error={
+                      Boolean(touched.firstname) && Boolean(errors.firstname)
+                    }
+                    helperText={touched.firstname && errors.firstname}
+                  />
+                </div>
+                <div className="mb-3">
+                  <TextField
+                    label="lastname"
+                    onChange={handleChange}
+                    value={values.lastname}
+                    name="lastname"
+                    error={
+                      Boolean(touched.lastname) && Boolean(errors.lastname)
+                    }
+                    helperText={touched.lastname && errors.lastname}
+                  />
+                </div>
+                <div className="mb-3">
+                  <TextField
+                    label="email"
+                    onChange={handleChange}
+                    value={values.email}
+                    name="email"
+                    error={Boolean(touched.email) && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                </div>
+                <div className="mb-3">
+                  <TextField
+                    type="password"
+                    label="password"
+                    onChange={handleChange}
+                    value={values.password}
+                    name="password"
+                    error={
+                      Boolean(touched.password) && Boolean(errors.password)
+                    }
+                    helperText={touched.password && errors.password}
+                  />
+                </div>
+                <div id="error-msg"></div>
+                <Link className="nav-link active" to="/login">
+                  <h6>Have an account? Login</h6>
+                </Link>
+                <Button type="submit" variant="contained">
+                  REGISTER
+                </Button>
+                <div id="error-msg"></div>
+              </form>
+            </div>
+
+            <div className="col right">
+              <h1>Surge SE Internship</h1>
+              <h3>March 2023</h3>
+              <h4>Rasula Yadithya</h4>
+            </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="firstname" className="form-label">
-              First Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="firstname"
-              placeholder="First Name"
-              required
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="lastname" className="form-label">
-              Last Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="lastname"
-              placeholder="Last Name"
-              required
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div id="error-msg"></div>
-          <Link className="nav-link active" to="/login">
-            <h6>Have an account? Login</h6>
-          </Link>
-          <input
-            className="btn btn-primary"
-            type="submit"
-            value="Register"
-            onClick={() => {
-              registerUser();
-            }}
-          />
         </div>
-        <div className="col right">
-          <h1>Surge SE Internship</h1>
-          <h3>March 2023</h3>
-          <h4>Rasula Yadithya</h4>
-        </div>
-      </div>
-    </div>
+      )}
+    </Formik>
   );
 };
 
-export default Register;
+export default RegisterForm;

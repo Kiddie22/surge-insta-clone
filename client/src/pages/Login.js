@@ -1,53 +1,34 @@
+import * as yup from 'yup';
 import axios from 'axios';
-import { useState } from 'react';
+import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
 import { useNavigate, Link } from 'react-router-dom';
+import { Button, TextField, Typography } from '@mui/material';
 
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const loginSchema = yup.object().shape({
+  username: yup.mixed().required('required'),
+  password: yup.string().required('required'),
+});
+
+const initialValuesLogin = {
+  username: '',
+  password: '',
+};
+
+const LoginForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  let navigate = useNavigate();
 
-  // const loginUser = async () => {
-  //   console.log(username);
-  //   console.log(password);
-  //   await axios
-  //     .post('api/auth/login', {
-  //       username,
-  //       password,
-  //     })
-  //     .then((res) => {
-  //       const data = res.data;
-  //       dispatch(setLogin({ user: data._id, token: data.token }));
-  //       navigate('/');
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       const element = document.getElementById('error-msg');
-  //       while (element.firstChild) {
-  //         element.firstChild.remove();
-  //       }
-
-  //       const mssg = document.createElement('p');
-  //       const node = document.createTextNode(error.response.data.msg);
-  //       mssg.appendChild(node);
-  //       element.style.color = 'red';
-  //       element.appendChild(mssg);
-  //       setUsername('');
-  //       setPassword('');
-  //     });
-  // };
-
-  const loginUser = async () => {
+  const handleFormSubmit = async (values, onSubmitProps) => {
     window.grecaptcha.ready(function () {
       window.grecaptcha
         .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
           action: 'submit',
         })
         .then(async function (grecaptcha) {
-          // Add your logic to submit to your backend server here.
+          let username = values.username;
+          let password = values.password;
           await axios
             .post('/api/auth/login', {
               username,
@@ -57,6 +38,7 @@ const Login = () => {
             .then((res) => {
               const data = res.data;
               console.log(data);
+              onSubmitProps.resetForm();
               dispatch(setLogin({ user: data._id, token: data.token }));
               navigate('/');
             })
@@ -65,78 +47,81 @@ const Login = () => {
               while (element.firstChild) {
                 element.firstChild.remove();
               }
-
               const mssg = document.createElement('p');
               const node = document.createTextNode(error.response.data.msg);
               mssg.appendChild(node);
               element.style.color = 'red';
               element.appendChild(mssg);
-              setUsername('');
-              setPassword('');
             });
         });
     });
   };
 
   return (
-    <div className="login">
-      <div className="row align-items-start">
-        <div
-          className="col login-form left"
-          style={{
-            backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
-          }}
-        >
-          <h1 className="display-3">Login</h1>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              placeholder="Username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+    <Formik
+      onSubmit={handleFormSubmit}
+      initialValues={initialValuesLogin}
+      validationSchema={loginSchema}
+    >
+      {({ values, errors, touched, handleChange, handleSubmit }) => (
+        <div className="register">
+          <div className="row align-items-start">
+            <div
+              className="col left register-form"
+              style={{
+                backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
+              }}
+            >
+              <form onSubmit={handleSubmit}>
+                <Typography variant="h2" gutterBottom>
+                  LOGIN
+                </Typography>
+                <div className="mb-3">
+                  <TextField
+                    label="username"
+                    onChange={handleChange}
+                    value={values.username}
+                    name="username"
+                    error={
+                      Boolean(touched.username) && Boolean(errors.username)
+                    }
+                    helperText={touched.username && errors.username}
+                  />
+                </div>
+                <div className="mb-3">
+                  <TextField
+                    type="password"
+                    label="password"
+                    onChange={handleChange}
+                    value={values.password}
+                    name="password"
+                    error={
+                      Boolean(touched.password) && Boolean(errors.password)
+                    }
+                    helperText={touched.password && errors.password}
+                  />
+                </div>
+                <div id="error-msg"></div>
+                <Link className="nav-link active" to="/register">
+                  <h6>New user? Register</h6>
+                </Link>
+                <Button type="submit" variant="contained">
+                  LOGIN
+                </Button>
+                <div id="error-msg"></div>
+              </form>
+            </div>
+
+            <div className="col right">
+              <h1>Surge SE Internship</h1>
+              <h3>March 2023</h3>
+              <h4>Rasula Yadithya</h4>
+            </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div id="error-msg"></div>
-          <Link className="nav-link active" to="/register">
-            <h6>New user? Register</h6>
-          </Link>
-          <input
-            className="btn btn-primary"
-            type="submit"
-            value="Login"
-            onClick={() => {
-              loginUser();
-            }}
-          />
         </div>
-        <div className="col text-center right">
-          <h1>Surge SE Internship</h1>
-          <h3>March 2023</h3>
-          <h4>Rasula Yadithya</h4>
-        </div>
-      </div>
-    </div>
+      )}
+    </Formik>
   );
 };
 
-export default Login;
+export default LoginForm;

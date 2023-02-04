@@ -4,7 +4,7 @@ import { setStatePosts } from '../state';
 import axios from 'axios';
 import Post from '../components/Post';
 import Profile from '../components/Profile';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
