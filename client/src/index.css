@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
+.home,
 .login,
 .register {
   border: solid black 1px;
@@ -78,4 +79,16 @@ code {
   align-items: center;
   flex-direction: column;
   height: 90vh;
+}
+
+#insta-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#profile-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }

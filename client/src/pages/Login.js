@@ -10,72 +10,73 @@ const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const loginUser = async () => {
-    console.log(username);
-    console.log(password);
-    await axios
-      .post('api/auth/login', {
-        username,
-        password,
-      })
-      .then((res) => {
-        const data = res.data;
-        dispatch(setLogin({ user: data._id, token: data.token }));
-        navigate('/');
-      })
-      .catch((error) => {
-        console.log(error);
-        const element = document.getElementById('error-msg');
-        while (element.firstChild) {
-          element.firstChild.remove();
-        }
+  // const loginUser = async () => {
+  //   console.log(username);
+  //   console.log(password);
+  //   await axios
+  //     .post('api/auth/login', {
+  //       username,
+  //       password,
+  //     })
+  //     .then((res) => {
+  //       const data = res.data;
+  //       dispatch(setLogin({ user: data._id, token: data.token }));
+  //       navigate('/');
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       const element = document.getElementById('error-msg');
+  //       while (element.firstChild) {
+  //         element.firstChild.remove();
+  //       }
 
-        const mssg = document.createElement('p');
-        const node = document.createTextNode(error.response.data.msg);
-        mssg.appendChild(node);
-        element.style.color = 'red';
-        element.appendChild(mssg);
-        setUsername('');
-        setPassword('');
-      });
-  };
-
-  // const doSubmit = async () => {
-  //   window.grecaptcha.ready(function () {
-  //     window.grecaptcha
-  //       .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
-  //         action: 'submit',
-  //       })
-  //       .then(async function (grecaptcha) {
-  //         // Add your logic to submit to your backend server here.
-  //         await axios
-  //           .post('/api/auth/login', {
-  //             username: username,
-  //             password: password,
-  //             grecaptcha: grecaptcha,
-  //           })
-  //           .then((res) => {
-  //             const data = res.data;
-  //             dispatch(setLogin({ user: data._id, token: data.token }));
-  //             navigate('/');
-  //           })
-  //           .catch((error) => {
-  //             const element = document.getElementById('error-msg');
-  //             while (element.firstChild) {
-  //               element.firstChild.remove();
-  //             }
-
-  //             const mssg = document.createElement('p');
-  //             const node = document.createTextNode(error.response.data.msg);
-  //             mssg.appendChild(node);
-  //             element.style.color = 'red';
-  //             element.appendChild(mssg);
-  //             setUsername('');
-  //             setPassword('');
-  //           });
-  //       });
-  //   });
+  //       const mssg = document.createElement('p');
+  //       const node = document.createTextNode(error.response.data.msg);
+  //       mssg.appendChild(node);
+  //       element.style.color = 'red';
+  //       element.appendChild(mssg);
+  //       setUsername('');
+  //       setPassword('');
+  //     });
   // };
+
+  const loginUser = async () => {
+    window.grecaptcha.ready(function () {
+      window.grecaptcha
+        .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
+          action: 'submit',
+        })
+        .then(async function (grecaptcha) {
+          // Add your logic to submit to your backend server here.
+          await axios
+            .post('/api/auth/login', {
+              username,
+              password,
+              grecaptcha,
+            })
+            .then((res) => {
+              const data = res.data;
+              console.log(data);
+              dispatch(setLogin({ user: data._id, token: data.token }));
+              navigate('/');
+            })
+            .catch((error) => {
+              const element = document.getElementById('error-msg');
+              while (element.firstChild) {
+                element.firstChild.remove();
+              }
+
+              const mssg = document.createElement('p');
+              const node = document.createTextNode(error.response.data.msg);
+              mssg.appendChild(node);
+              element.style.color = 'red';
+              element.appendChild(mssg);
+              setUsername('');
+              setPassword('');
+            });
+        });
+    });
+  };
 
   return (
     <div className="login">

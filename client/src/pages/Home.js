@@ -53,11 +53,10 @@ const Home = () => {
           <div className="loading-spinner"></div>
         </div>
       ) : (
-        <Container>
+        <div className="home" style={{ border: 'solid black 1px' }}>
           <Row>
-            <Col>
+            <Col id="insta-image">
               <img
-                className="mt-3"
                 src="assets/insta.png"
                 alt="instagram icon"
                 style={{ width: '100px' }}
@@ -73,11 +72,11 @@ const Home = () => {
                   );
                 })}
             </Col>
-            <Col>
+            <Col id="profile-form">
               <Profile user={user} />
             </Col>
           </Row>
-        </Container>
+        </div>
       )}
     </>
   );

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddImage = (props) => {
   const { user } = props;
   const instance = axios.create();
   const [image, setImage] = useState();
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,10 +25,8 @@ const AddImage = (props) => {
       const submitPost = {
         image: imageUrl,
       };
-      await instance.post(
-        `api/auth/${user._id}`,
-        submitPost
-      );
+      await instance.post(`api/auth/${user._id}`, submitPost);
+      navigate(0);
     } catch (err) {
       console.log(err);
     }
@@ -34,19 +34,25 @@ const AddImage = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group">
+      <div className="input-group p-2">
         <input
-          className="form-control"
           type="file"
+          className="form-control"
           id="formFile"
           name="file"
+          aria-describedby="inputGroupFileAddon04"
+          aria-label="Upload"
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
         />
+        <button
+          className="btn btn-secondary"
+          type="submit"
+          id="inputGroupFileAddon04"
+        >
+          Change picture
+        </button>
       </div>
-      <button type="submit" className="btn btn-primary m-1">
-        Submit
-      </button>
     </form>
   );
 };
