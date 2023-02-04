@@ -10,7 +10,7 @@ const app = express();
 
 app.use((req, res, next) => {
   res.setHeader(
-    'Content-Security-Policy-Report-Only',
+    'Content-Security-Policy',
     "default-src * 'unsafe-inline' 'unsafe-eval';"
   );
   next();
