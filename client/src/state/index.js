@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null,
-  token: null,
+  user: sessionStorage.getItem('user') || null,
+  token: sessionStorage.getItem('token') || null,
   posts: [],
 };
 
@@ -13,10 +13,14 @@ export const authSlice = createSlice({
     setLogin: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      sessionStorage.setItem('user', state.user);
+      sessionStorage.setItem('token', state.token);
     },
     setLogout: (state) => {
       state.user = null;
       state.user = null;
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
     },
     setPosts: (state, action) => {
       state.posts = action.payload.posts;

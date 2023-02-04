@@ -3,12 +3,15 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Post from '../components/Post';
 import Profile from '../components/Profile';
+import { Container, Row, Col } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+  const navigate = useNavigate();
 
   const fetchPosts = async (req, res) => {
     await axios
@@ -29,35 +32,39 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
     fetchPosts();
     fetchUser();
   }, []);
 
   return (
-    <div className="container text-center">
-      <div className="row align-items-start">
-        <div className="col-4">
+    <Container>
+      <Row>
+        <Col>
           <img
             className="mt-3"
             src="assets/insta.png"
             alt="instagram icon"
             style={{ width: '100px' }}
           />
-        </div>
-        <div className="col-4">
-          {posts.map((post) => {
-            return (
-              <div key={post._id}>
-                <Post post={post} user={user} />
-              </div>
-            );
-          })}
-        </div>
-        <div className="col-4">
+        </Col>
+        <Col>
+          {posts &&
+            posts.map((post) => {
+              return (
+                <div key={post._id}>
+                  <Post post={post} user={user} />
+                </div>
+              );
+            })}
+        </Col>
+        <Col>
           <Profile user={user} />
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

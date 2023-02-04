@@ -1,4 +1,22 @@
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
+
+const getRecaptchaRes = (req, res, next) => {
+  const secret = process.env.RECAPTCHA_SECRET;
+  const response = req.body.response;
+  axios
+    .post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${response}`
+    )
+    .then((res) => {
+      console.log(res.data);
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(401).json({ msg: 'Captcha failed' });
+    });
+};
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -25,4 +43,4 @@ const verifyTokenAndAuthorize = (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken, verifyTokenAndAuthorize };
+module.exports = { getRecaptchaRes, verifyToken, verifyTokenAndAuthorize };

@@ -3,7 +3,7 @@ const Router = express.Router();
 const User = require('../models/User');
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
-const { verifyToken } = require('./verifyToken');
+const { getRecaptchaRes, verifyToken } = require('./verifyToken');
 
 //REGISTER
 Router.post('/register', async (req, res) => {
@@ -48,7 +48,7 @@ Router.post('/register', async (req, res) => {
 });
 
 //LOGIN
-Router.post('/login', async (req, res) => {
+Router.post('/login', getRecaptchaRes, async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user) {
     res.status(401).json({ msg: 'User does not exist' });

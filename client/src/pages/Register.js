@@ -45,86 +45,100 @@ const Register = () => {
 
   return (
     <div className="container">
-      <h1 className="display-3">Register</h1>
-      <div className="mb-3">
-        <label htmlFor="username" className="form-label">
-          Username
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          name="username"
-          placeholder="Username"
-          required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+      <div className="row align-items-start">
+        <div
+          className="col"
+          style={{
+            backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
+          }}
+        >
+          <h1 className="display-3">Register</h1>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="username"
+              placeholder="Username"
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="firstname" className="form-label">
+              First Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="firstname"
+              placeholder="First Name"
+              required
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="lastname" className="form-label">
+              Last Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="lastname"
+              placeholder="Last Name"
+              required
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="email"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              placeholder="Password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div id="error-msg"></div>
+          <input
+            className="btn btn-primary"
+            type="submit"
+            value="Register"
+            onClick={() => {
+              registerUser();
+            }}
+          />
+        </div>
+        <div className="col text-center">
+          <h1>Surge SE Internship</h1>
+          <h3>March 2023</h3>
+          <h4>Rasula Yadithya</h4>
+        </div>
       </div>
-      <div className="mb-3">
-        <label htmlFor="firstname" className="form-label">
-          First Name
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          name="firstname"
-          placeholder="First Name"
-          required
-          value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="lastname" className="form-label">
-          Last Name
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          name="lastname"
-          placeholder="Last Name"
-          required
-          value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          name="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">
-          Password
-        </label>
-        <input
-          type="password"
-          className="form-control"
-          name="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div id="error-msg"></div>
-      <input
-        className="btn btn-primary"
-        type="submit"
-        value="Register"
-        onClick={() => {
-          registerUser();
-        }}
-      />
     </div>
   );
 };
