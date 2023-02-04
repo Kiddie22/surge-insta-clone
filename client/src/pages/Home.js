@@ -54,7 +54,7 @@ const Home = () => {
             style={{ width: '100px' }}
           />
         </Col>
-        <Col>
+        <Col className='scrollable'>
           {posts &&
             posts.map((post) => {
               return (

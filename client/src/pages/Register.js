@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -45,10 +45,10 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
+    <div className="register">
       <div className="row align-items-start">
         <div
-          className="col"
+          className="col left register-form"
           style={{
             backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
           }}
@@ -125,6 +125,9 @@ const Register = () => {
             />
           </div>
           <div id="error-msg"></div>
+          <Link className="nav-link active" to="/login">
+            <h6>Have an account? Login</h6>
+          </Link>
           <input
             className="btn btn-primary"
             type="submit"
@@ -134,7 +137,7 @@ const Register = () => {
             }}
           />
         </div>
-        <div className="col text-center">
+        <div className="col right">
           <h1>Surge SE Internship</h1>
           <h3>March 2023</h3>
           <h4>Rasula Yadithya</h4>

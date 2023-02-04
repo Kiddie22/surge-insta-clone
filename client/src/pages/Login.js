@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -78,10 +78,10 @@ const Login = () => {
   // };
 
   return (
-    <div className="container login">
+    <div className="login">
       <div className="row align-items-start">
         <div
-          className="col login-form"
+          className="col login-form left"
           style={{
             backgroundImage: `url("https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/12/Gradient_builder_2.jpg?auto=format&q=60&w=1815&h=1200&fit=crop&crop=faces")`,
           }}
@@ -116,6 +116,9 @@ const Login = () => {
             />
           </div>
           <div id="error-msg"></div>
+          <Link className="nav-link active" to="/register">
+            <h6>New user? Register</h6>
+          </Link>
           <input
             className="btn btn-primary"
             type="submit"
@@ -125,7 +128,7 @@ const Login = () => {
             }}
           />
         </div>
-        <div className="col text-center">
+        <div className="col text-center right">
           <h1>Surge SE Internship</h1>
           <h3>March 2023</h3>
           <h4>Rasula Yadithya</h4>

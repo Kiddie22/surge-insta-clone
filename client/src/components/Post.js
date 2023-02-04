@@ -51,7 +51,7 @@ const Post = (props) => {
   };
 
   return (
-    <Card className="text-center">
+    <Card className="text-center card">
       <img src={post.pictureUrl} className="card-img-top" />
       <CardBody>
         <Row>
