@@ -11,7 +11,7 @@ const app = express();
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy-Report-Only',
-    "default-src 'self'; font-src * 'self'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline' 'unsafe-eval';"
+    "default-src * 'unsafe-inline' 'unsafe-eval';"
   );
   next();
 });
