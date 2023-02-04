@@ -46,7 +46,8 @@ router.put('/add/:id', verifyToken, async (req, res) => {
       $set: {
         [`likes.${userId}`]: true,
       },
-    }
+    },
+    { new: true }
   );
   res.status(200).json(post);
 });
@@ -61,7 +62,8 @@ router.put('/remove/:id', verifyToken, async (req, res) => {
       $unset: {
         [`likes.${userId}`]: '',
       },
-    }
+    },
+    { new: true }
   );
   res.status(200).json(post);
 });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStatePosts } from '../state';
 import axios from 'axios';
 import Post from '../components/Post';
 import Profile from '../components/Profile';
@@ -7,11 +8,12 @@ import { Container, Row, Col } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+  const posts = useSelector((state) => state.posts);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const fetchPosts = async (req, res) => {
     await axios
@@ -21,7 +23,7 @@ const Home = () => {
         },
       })
       .then((res) => {
-        setPosts(res.data);
+        dispatch(setStatePosts({ posts: res.data }));
       });
   };
 
@@ -39,7 +41,7 @@ const Home = () => {
       fetchPosts();
       fetchUser();
     }
-  }, []);
+  }, [posts]);
 
   return (
     <Container>

@@ -22,12 +22,12 @@ export const authSlice = createSlice({
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('token');
     },
-    setPosts: (state, action) => {
+    setStatePosts: (state, action) => {
       state.posts = action.payload.posts;
     },
     setPost: (state, action) => {
       const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post_id) {
+        if (post._id === action.payload.post._id) {
           return action.payload.post;
         } else {
           return post;
@@ -38,5 +38,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setLogin, setLogout, setPosts, setPost } = authSlice.actions;
+export const { setLogin, setLogout, setStatePosts, setPost } =
+  authSlice.actions;
 export default authSlice.reducer;

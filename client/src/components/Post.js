@@ -1,11 +1,15 @@
-import { useSelector } from 'react-redux';
-import { Card, CardBody, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPost } from '../state';
+import { Card, CardBody, Row, Col } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Post = (props) => {
   const { post, user } = props;
   const userId = user._id;
   const token = useSelector((state) => state.token);
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const getDays = () => {
     let today = new Date();
@@ -25,7 +29,10 @@ const Post = (props) => {
         {},
         { headers: { authorization: `Bearer ${token}` } }
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+        dispatch(setPost({ post: res.data }));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -36,7 +43,10 @@ const Post = (props) => {
         {},
         { headers: { authorization: `Bearer ${token}` } }
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+        dispatch(setPost({ post: res.data }));
+      })
       .catch((err) => console.log(err));
   };
 
