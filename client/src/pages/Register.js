@@ -28,6 +28,7 @@ const Register = () => {
         navigate(`/`);
       })
       .catch((error) => {
+        console.log(error);
         const element = document.getElementById('error-msg');
         while (element.firstChild) {
           element.firstChild.remove();

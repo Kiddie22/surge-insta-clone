@@ -35,8 +35,10 @@ const Home = () => {
     if (!token) {
       navigate('/login');
     }
-    fetchPosts();
-    fetchUser();
+    if (token) {
+      fetchPosts();
+      fetchUser();
+    }
   }, []);
 
   return (

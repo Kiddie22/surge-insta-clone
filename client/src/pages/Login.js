@@ -1,9 +1,8 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
 import { useNavigate } from 'react-router-dom';
-import env from 'react-dotenv';
-import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -11,42 +10,72 @@ const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const doSubmit = async () => {
-    window.grecaptcha.ready(function () {
-      window.grecaptcha
-        .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
-          action: 'submit',
-        })
-        .then(async function (grecaptcha) {
-          // Add your logic to submit to your backend server here.
-          await axios
-            .post('http://localhost:5000/api/auth/login', {
-              username: username,
-              password: password,
-              grecaptcha: grecaptcha,
-            })
-            .then((res) => {
-              const data = res.data;
-              dispatch(setLogin({ user: data._id, token: data.token }));
-              navigate('/');
-            })
-            .catch((error) => {
-              const element = document.getElementById('error-msg');
-              while (element.firstChild) {
-                element.firstChild.remove();
-              }
+  const loginUser = async () => {
+    console.log(username);
+    console.log(password);
+    await axios
+      .post('http://localhost:5000/api/auth/login', {
+        username,
+        password,
+      })
+      .then((res) => {
+        const data = res.data;
+        dispatch(setLogin({ user: data._id, token: data.token }));
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+        const element = document.getElementById('error-msg');
+        while (element.firstChild) {
+          element.firstChild.remove();
+        }
 
-              const mssg = document.createElement('p');
-              const node = document.createTextNode(error.response.data.msg);
-              mssg.appendChild(node);
-              element.style.color = 'red';
-              element.appendChild(mssg);
-              setUsername('');
-              setPassword('');
-            });
-        });
-    });
+        const mssg = document.createElement('p');
+        const node = document.createTextNode(error.response.data.msg);
+        mssg.appendChild(node);
+        element.style.color = 'red';
+        element.appendChild(mssg);
+        setUsername('');
+        setPassword('');
+      });
   };
+
+  // const doSubmit = async () => {
+  //   window.grecaptcha.ready(function () {
+  //     window.grecaptcha
+  //       .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
+  //         action: 'submit',
+  //       })
+  //       .then(async function (grecaptcha) {
+  //         // Add your logic to submit to your backend server here.
+  //         await axios
+  //           .post('/api/auth/login', {
+  //             username: username,
+  //             password: password,
+  //             grecaptcha: grecaptcha,
+  //           })
+  //           .then((res) => {
+  //             const data = res.data;
+  //             dispatch(setLogin({ user: data._id, token: data.token }));
+  //             navigate('/');
+  //           })
+  //           .catch((error) => {
+  //             const element = document.getElementById('error-msg');
+  //             while (element.firstChild) {
+  //               element.firstChild.remove();
+  //             }
+
+  //             const mssg = document.createElement('p');
+  //             const node = document.createTextNode(error.response.data.msg);
+  //             mssg.appendChild(node);
+  //             element.style.color = 'red';
+  //             element.appendChild(mssg);
+  //             setUsername('');
+  //             setPassword('');
+  //           });
+  //       });
+  //   });
+  // };
 
   return (
     <div className="container login">
@@ -92,7 +121,7 @@ const Login = () => {
             type="submit"
             value="Login"
             onClick={() => {
-              doSubmit();
+              loginUser();
             }}
           />
         </div>
