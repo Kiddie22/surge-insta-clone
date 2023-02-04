@@ -1,11 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 require('express-async-errors');
-
 const app = express();
+const port = process.env.PORT || 5000;
 
 // app.use((req, res, next) => {
 //   res.setHeader(
@@ -17,8 +16,6 @@ const app = express();
 
 //MIDDLEWARE
 app.use(express.json());
-app.use(cors());
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
 }
@@ -29,7 +26,6 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
   console.log('Connected to DB');
 });
 
-const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log('Server is running on port', port);
 });
