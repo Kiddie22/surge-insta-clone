@@ -6,14 +6,6 @@ require('express-async-errors');
 const app = express();
 const port = process.env.PORT || 5000;
 
-// app.use((req, res, next) => {
-//   res.setHeader(
-//     'Content-Security-Policy',
-//     "default-src * 'unsafe-inline' 'unsafe-eval';"
-//   );
-//   next();
-// });
-
 //MIDDLEWARE
 app.use(express.json());
 if (process.env.NODE_ENV === 'production') {

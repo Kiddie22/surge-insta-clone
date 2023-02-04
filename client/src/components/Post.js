@@ -67,7 +67,7 @@ const Post = (props) => {
                   className="bi bi-heart-fill px-1"
                   style={{ color: 'red' }}
                 ></i>
-                {post.likes && Object.keys(post.likes).length}
+                {post.likes && post.likeCount}
               </button>
             </Col>
           ) : (
@@ -79,8 +79,7 @@ const Post = (props) => {
                 onClick={() => likePost()}
               >
                 <i className="bi bi-heart-fill px-1"></i>
-                {/* {post.likes ? post.likes.hasOwnProperty.length : '0'} */}
-                {post.likes && Object.keys(post.likes).length}
+                {post.likes && post.likeCount}
               </button>
             </Col>
           )}

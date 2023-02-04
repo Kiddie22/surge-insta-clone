@@ -6,9 +6,12 @@ import Post from '../components/Post';
 import Profile from '../components/Profile';
 import { Row, Col } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const Home = () => {
   const [user, setUser] = useState({});
+  const [type, setType] = useState('Created Date');
   const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
@@ -16,10 +19,16 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const fetchPosts = async (req, res) => {
+  const fetchPosts = async (order) => {
     setIsLoading(true);
+    let endpoint = '';
+    if (order === 'date') {
+      endpoint = 'api/posts/';
+    } else {
+      endpoint = 'api/posts/?search=likes';
+    }
     await axios
-      .get('api/posts/', {
+      .get(endpoint, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -63,6 +72,24 @@ const Home = () => {
               />
             </Col>
             <Col className="scrollable">
+              <div>
+                <ButtonGroup variant="text" aria-label="text button group">
+                  <Button
+                    onClick={() => {
+                      fetchPosts('date');
+                    }}
+                  >
+                    Created Date
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      fetchPosts('likes');
+                    }}
+                  >
+                    Likes
+                  </Button>
+                </ButtonGroup>
+              </div>
               {posts &&
                 posts.map((post) => {
                   return (

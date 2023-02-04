@@ -5,7 +5,13 @@ const { verifyToken } = require('./verifyToken');
 
 //FETCH ALL POSTS
 router.get('/', verifyToken, async (req, res) => {
-  const posts = await Post.find();
+  const query = req.query.search;
+  let posts;
+  if (query) {
+    posts = await Post.find().sort({ likeCount: -1 });
+  } else {
+    posts = await Post.find().sort({ createdAt: -1 });
+  }
   res.status(200).json(posts);
 });
 
@@ -46,6 +52,9 @@ router.put('/add/:id', verifyToken, async (req, res) => {
       $set: {
         [`likes.${userId}`]: true,
       },
+      $inc: {
+        likeCount: 1,
+      },
     },
     { new: true }
   );
@@ -61,6 +70,9 @@ router.put('/remove/:id', verifyToken, async (req, res) => {
     {
       $unset: {
         [`likes.${userId}`]: '',
+      },
+      $inc: {
+        likeCount: -1,
       },
     },
     { new: true }
