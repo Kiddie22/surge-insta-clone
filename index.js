@@ -11,7 +11,7 @@ const app = express();
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy-Report-Only',
-    "default-src 'self'; font-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css; frame-src 'self'"
+    "default-src 'self'; font-src * 'self'; style-src 'self' * 'unsafe-inline' 'unsafe-eval'; frame-src 'self'"
   );
   next();
 });
