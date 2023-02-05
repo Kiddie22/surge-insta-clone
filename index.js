@@ -29,3 +29,7 @@ const postRoutes = require('./routes/postRoutes');
 app.use('/api/auth', auth);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/', express.static(path.join(__dirname, '/client/build')));
+app.use('/login', express.static(path.join(__dirname, '/client/build')));
+app.use('/register', express.static(path.join(__dirname, '/client/build')));
+app.use('*', (req, res) => res.redirect('/'));
