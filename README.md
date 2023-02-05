@@ -44,4 +44,4 @@ Hosted at [https://surge-insta-clone.herokuapp.com/](https://surge-insta-clone.h
 
 ### User Interface
 ![image](https://user-images.githubusercontent.com/65882072/216810097-b4715282-bb1f-4a9a-8859-44b1cf5b26d5.png)
-![image](https://user-images.githubusercontent.com/65882072/216810114-6dd11a7f-4a74-49a3-820b-d62dc54fa74d.png)
+![image](https://user-images.githubusercontent.com/65882072/216821884-ee1bf595-2d3c-40cb-9ca9-5ac7ab02da55.png)
