@@ -30,6 +30,8 @@ jobs:
       run: |
           touch .env
           echo TEST_MONGO_URI=${{ secrets.TEST_MONGO_URI }} >> .env
+          echo PASS_SECRET=${{ secrets.PASS_SECRET }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           cat .env
     - run: npm ci
     - run: npm test
