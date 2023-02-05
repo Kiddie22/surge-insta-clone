@@ -53,6 +53,7 @@ describe('POST /api/auth/login', () => {
     for (const collection of collections) {
       await collection.deleteMany({});
     }
+    await mongoose.connection.close();
   });
 
   test('should login the user', async () => {
