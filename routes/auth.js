@@ -7,7 +7,13 @@ const { getRecaptchaRes, verifyToken } = require('./verifyToken');
 
 //REGISTER
 Router.post('/register', async (req, res) => {
-  if ((!req.body.username, !req.body.email, !req.body.password)) {
+  if (
+    (!req.body.username,
+    !req.body.email,
+    !req.body.password,
+    !req.body.firstname,
+    !req.body.lastname)
+  ) {
     res.status(401).json({ msg: 'Complete the form' });
   }
 
