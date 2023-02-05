@@ -2,20 +2,33 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const getRecaptchaRes = (req, res, next) => {
-  const secret = process.env.RECAPTCHA_SECRET;
-  const response = req.body.response;
-  axios
-    .post(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${response}`
-    )
-    .then((res) => {
-      console.log(res.data);
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(401).json({ msg: 'Captcha failed' });
-    });
+  if (process.env.NODE_ENV === 'test') {
+    next();
+  } else {
+    const secret = process.env.RECAPTCHA_SECRET;
+    const response = req.body.grecaptcha;
+    console.log(secret);
+    console.log(response);
+    axios
+      .post(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${response}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.success === true) {
+          req.captchaSucess = res.data.success;
+          next();
+        } else {
+          return res.status(401).json({ msg: 'Captcha failed' });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return res
+          .status(401)
+          .json({ msg: 'Could not send recaptcha for verification' });
+      });
+  }
 };
 
 const verifyToken = (req, res, next) => {

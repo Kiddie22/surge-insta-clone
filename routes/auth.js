@@ -3,10 +3,12 @@ const Router = express.Router();
 const User = require('../models/User');
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
-const { getRecaptchaRes, verifyToken } = require('./verifyToken');
+const { getRecaptchaRes } = require('./verifyToken');
 
 //REGISTER
-Router.post('/register', async (req, res) => {
+Router.post('/register', getRecaptchaRes, async (req, res) => {
+  const captchaSucess = req.captchaSucess;
+
   if (
     (!req.body.username,
     !req.body.email,
@@ -43,19 +45,20 @@ Router.post('/register', async (req, res) => {
     {
       id: savedUser._id,
       username: savedUser.username,
-      isAdmin: savedUser.isAdmin,
     },
     process.env.JWT_SECRET,
     { expiresIn: '30d' }
   );
 
   const { password, ...others } = savedUser._doc;
-  res.status(200).json({ ...others, token });
+  res.status(200).json({ ...others, token, captchaSucess });
 });
 
 //LOGIN
-Router.post('/login', async (req, res) => {
+Router.post('/login', getRecaptchaRes, async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
+  const captchaSucess = req.captchaSucess;
+
   if (!user) {
     res.status(401).json({ msg: 'User does not exist' });
   }
@@ -74,14 +77,13 @@ Router.post('/login', async (req, res) => {
     {
       id: user._id,
       username: user.username,
-      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET,
     { expiresIn: '30d' }
   );
 
   const { password, ...others } = user._doc;
-  res.status(200).json({ ...others, token });
+  res.status(200).json({ ...others, token, captchaSucess });
 });
 
 // ADD PROFILE PICTURE
