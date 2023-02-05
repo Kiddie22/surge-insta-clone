@@ -37,6 +37,7 @@ describe('GET /api/activities', () => {
     for (const collection of collections) {
       await collection.deleteMany({});
     }
+    await mongoose.connection.close();
   });
   
   test('should get all the posts', async () => {
