@@ -12,7 +12,7 @@ app.use(cors());
 /* Connecting to the database before each test. */
 beforeEach(async () => {
   mongoose.set('strictQuery', true);
-  await mongoose.connect(process.env.TEST_MONGO_URI);
+  await mongoose.connect(TEST_MONGO_URI);
 });
 
 /* Closing database connection after each test. */
