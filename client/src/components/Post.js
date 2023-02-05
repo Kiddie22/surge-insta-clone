@@ -1,14 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setPost } from '../state';
 import { Card, CardBody, Row, Col } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Post = (props) => {
   const { post, user } = props;
   const userId = user._id;
   const token = useSelector((state) => state.token);
-  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getDays = () => {
@@ -52,10 +50,10 @@ const Post = (props) => {
 
   return (
     <Card className="text-center card">
-      <img src={post.pictureUrl} className="card-img-top" />
+      <img src={post.pictureUrl} className="card-img-top" alt='post-pic' />
       <CardBody>
         <Row>
-          {post.likes && post.likes[userId] == true ? (
+          {post.likes && post.likes[userId] === true ? (
             // if user has liked the post
             <Col>
               <button

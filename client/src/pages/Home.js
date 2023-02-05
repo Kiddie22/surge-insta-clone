@@ -11,7 +11,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 const Home = () => {
   const [user, setUser] = useState({});
-  const [type, setType] = useState('Created Date');
   const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
