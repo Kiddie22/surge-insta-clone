@@ -25,27 +25,38 @@ const initialValuesRegister = {
 const RegisterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleFormSubmit = async (values, onSubmitProps) => {
-    await axios
-      .post('api/auth/register', values)
-      .then((res) => {
-        const data = res.data;
-        onSubmitProps.resetForm();
-        dispatch(setLogin({ user: data._id, token: data.token }));
-        navigate(`/`);
-      })
-      .catch((error) => {
-        console.log(error);
-        const element = document.getElementById('error-msg');
-        while (element.firstChild) {
-          element.firstChild.remove();
-        }
-        const mssg = document.createElement('p');
-        const node = document.createTextNode(error.response.data.msg);
-        mssg.appendChild(node);
-        element.style.color = 'red';
-        element.appendChild(mssg);
-      });
+    window.grecaptcha.ready(function () {
+      window.grecaptcha
+        .execute('6LdZgUskAAAAALsqK8LTRp1q-hwuV83QIfMhrv95', {
+          action: 'submit',
+        })
+        .then(async function (grecaptcha) {
+          values.grecaptcha = grecaptcha;
+          await axios
+            .post('api/auth/register', values)
+            .then((res) => {
+              const data = res.data;
+              console.log(data);
+              onSubmitProps.resetForm();
+              dispatch(setLogin({ user: data._id, token: data.token }));
+              navigate(`/`);
+            })
+            .catch((error) => {
+              console.log(error);
+              const element = document.getElementById('error-msg');
+              while (element.firstChild) {
+                element.firstChild.remove();
+              }
+              const mssg = document.createElement('p');
+              const node = document.createTextNode(error.response.data.msg);
+              mssg.appendChild(node);
+              element.style.color = 'red';
+              element.appendChild(mssg);
+            });
+        });
+    });
   };
 
   return (
