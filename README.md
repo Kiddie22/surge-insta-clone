@@ -32,7 +32,7 @@ Hosted at [https://surge-insta-clone.herokuapp.com/](https://surge-insta-clone.h
 
 ### Added Functionality
 - [x] Register and Login screens for authentication
-- [ ] Integration of Captcha for login/registration forms
+- [X] Integration of Captcha for login/registration forms
 - [x] Users can authenticate with their username/email and password
 - [ ] Use an identity management solution for authentication
 - [x] Validation for all sorts of data and input fields
