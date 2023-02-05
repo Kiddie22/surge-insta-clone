@@ -26,7 +26,7 @@ const Profile = (props) => {
       >
         <img
           src={user.profilePictureUrl}
-          alt="profile picture of the user"
+          alt="profile pic of the user"
           height={'100px'}
           style={{
             borderRadius: '100px',
