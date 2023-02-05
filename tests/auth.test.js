@@ -26,10 +26,6 @@ const userRoutes = require('../routes/userRouter');
 app.use('/api/auth', auth);
 app.use('/api/users', userRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
 describe('POST /api/auth/register', () => {
   test('should register new user', async () => {
     const response = await request(app).post('/api/auth/register').send({
