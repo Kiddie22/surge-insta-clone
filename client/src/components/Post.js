@@ -49,9 +49,11 @@ const Post = (props) => {
   };
 
   return (
-    <Card className="text-center card">
-      <img src={post.pictureUrl} className="card-img-top" alt='post-pic' />
+    <Card className="text-center card my-3">
+      <img src={post.pictureUrl} className="card-img-top" alt="post-pic" />
       <CardBody>
+        <p>{post.description}</p>
+        <hr />
         <Row>
           {post.likes && post.likes[userId] === true ? (
             // if user has liked the post

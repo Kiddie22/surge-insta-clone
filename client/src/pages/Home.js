@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setStatePosts } from '../state';
 import axios from 'axios';
 import Post from '../components/Post';
 import Profile from '../components/Profile';
+import NewPostForm from '../components/NewPostForm';
 import { Row, Col } from 'reactstrap';
+import { setStatePosts } from '../state';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box} from '@mui/material';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Home = () => {
   const [user, setUser] = useState({});
@@ -72,23 +75,26 @@ const Home = () => {
             </Col>
             <Col className="scrollable">
               <div>
-                <ButtonGroup variant="text" aria-label="text button group">
-                  <Button
-                    onClick={() => {
-                      fetchPosts('date');
-                    }}
-                  >
-                    Created Date
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      fetchPosts('likes');
-                    }}
-                  >
-                    Likes
-                  </Button>
-                </ButtonGroup>
+                <Box sx={{ width: 500 }}>
+                  <BottomNavigation showLabels>
+                    <BottomNavigationAction
+                      label="Sort by Date"
+                      icon={<CalendarMonthIcon />}
+                      onClick={() => {
+                        fetchPosts('date');
+                      }}
+                    />
+                    <BottomNavigationAction
+                      label="Sort by Likes"
+                      icon={<FavoriteIcon />}
+                      onClick={() => {
+                        fetchPosts('likes');
+                      }}
+                    />
+                  </BottomNavigation>
+                </Box>
               </div>
+              <NewPostForm />
               {posts &&
                 posts.map((post) => {
                   return (
